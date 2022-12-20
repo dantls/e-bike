@@ -2,6 +2,7 @@ import { Box, FlatList } from 'native-base';
 import { useEffect, useState } from 'react';
 import { DetailBackground } from '../atomic/atoms/DetailBackground';
 import { Card } from '../atomic/molecules/Card';
+import { Header } from '../atomic/molecules/Header';
 import { MainBanner } from '../atomic/molecules/MainBanner';
 import api from '../service/api';
 import { theme } from '../styles/theme';
@@ -43,7 +44,10 @@ export function Home(){
 
       <FlatList
         ListHeaderComponent={
-          () => <MainBanner />
+          () => <>
+            <Header text="Choose Your Bike"/>
+            <MainBanner />
+          </>
         }
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}

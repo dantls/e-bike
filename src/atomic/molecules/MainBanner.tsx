@@ -9,7 +9,7 @@ export function MainBanner(){
     <Box 
       width="100%"
       height="300"
-      marginTop="60px"
+      marginTop="-25px"
     >
       <ImageBackground
         source={slider}

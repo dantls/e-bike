@@ -1,9 +1,36 @@
-import { Box } from 'native-base';
+import { Box, FlatList } from 'native-base';
+import { useEffect, useState } from 'react';
 import { DetailBackground } from '../atomic/atoms/DetailBackground';
+import { Card } from '../atomic/molecules/Card';
 import { MainBanner } from '../atomic/molecules/MainBanner';
+import api from '../service/api';
 import { theme } from '../styles/theme';
 
+export interface CardProps {
+   id: string;
+   image: string;
+   model: string;
+   title: string; 
+   price: number;
+}
+
 export function Home(){
+
+  const [equipments, setEquipments] = useState<CardProps[]>([]);
+
+  async function getEquipments(){
+    try {
+      const response = await api.get('/equipments');
+      setEquipments(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+  useEffect(()=>{
+    getEquipments();
+  },[])
+
   return(
     <Box
       flex="1"
@@ -13,7 +40,25 @@ export function Home(){
       position="relative"
     >
       <DetailBackground />
-      <MainBanner />
+
+      <FlatList
+        ListHeaderComponent={
+          () => <MainBanner />
+        }
+        keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
+        numColumns={2}
+        data={equipments}
+        renderItem={({item:equipment})=> (          
+          <Card
+            id={equipment.id}
+            image={equipment.image}
+            model={equipment.model}
+            price={equipment.price}
+            title={equipment.title}
+          />
+        )}
+      />
     </Box>
   )
 }
